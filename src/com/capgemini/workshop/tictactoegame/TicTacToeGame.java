@@ -121,19 +121,26 @@ public class TicTacToeGame {
 					BOARD[win] = COMPUTER;
 					break;
 				} else {
-					System.out.println("There is no move to win now! "
-							+ "Enter the index from 1 to 9 where you want to place your move: ");
+					int block = canIBlock();
+					if(block>0) {
+						BOARD[block] = COMPUTER;
+						IsPlayerTurn = true;
+						IsComputerTurn = false;
+						break;
+					}
+					else {
+					System.out.println("There is no position to block and win!!");
+					System.out.println("Enter the index from 1 to 9 where you want to place your move: ");
 					INDEX = sc.nextInt();
 					if (isFreeSpace(BOARD, INDEX) && (INDEX > 0) && (INDEX < 10)) {
 						System.out.println("Its valid move");
 						BOARD[INDEX] = COMPUTER;
-
 						IsPlayerTurn = true;
 						IsComputerTurn = false;
 						break;
 					} else {
 						System.out.println("Already occupied! please select another index");
-					}
+					}}
 				}
 			}
 		}
@@ -191,6 +198,27 @@ public class TicTacToeGame {
 				}
 			}
 		}
+		return 0;
+	}
+	public static int canIBlock() {
+		IsPlayerTurn = true;
+		IsComputerTurn = false;
+		for(int i=1;i<10;i++) {
+			if(BOARD[i] == ' ') {
+				BOARD[i] = PLAYER;
+				if(IsWin()) {
+					BOARD[i] =' ';
+					IsPlayerTurn = false;
+					IsComputerTurn = true;
+					return i;
+				}
+				else {
+					BOARD[i] =' ';
+				}
+			}
+		}
+		IsPlayerTurn = false;
+		IsComputerTurn = true;
 		return 0;
 	}
 }
