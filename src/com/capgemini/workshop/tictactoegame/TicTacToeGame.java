@@ -9,20 +9,41 @@ public class TicTacToeGame {
 	static int INDEX;
 	static char PLAYER = ' ';
 	static char COMPUTER = ' ';
-
+	static boolean HEAD,TAIL;
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to TicTacToe Game");
 		createBoard();
+		int toss = (int)(Math.random()*10)%2;
+		if(toss == 0) {
+			HEAD = true;
+			TAIL = false;
+		}
+		else {
+			HEAD = false;
+			TAIL = true;
+		}
 		while (true) {
 			System.out.println("Do you want to play?(y/n)");
 			char play = sc.next().charAt(0);
 			if(play == 'y') {
-			PLAYER = playerInput();
-			if (PLAYER == 'X') {
-				COMPUTER = 'O';
+			char input = playerInput();
+			if (HEAD) {
+				PLAYER = input;
+				if(PLAYER == 'X') {
+					COMPUTER = 'O';
+				}
+				else {
+					COMPUTER = 'X';
+				}
 			} else {
-				COMPUTER = 'X';
+				COMPUTER = input;
+				if(COMPUTER == 'X') {
+					PLAYER = 'O';
+				}
+				else {
+					PLAYER = 'X';
+				}
 			}
 			System.out.println("Player mark: " + PLAYER);
 			System.out.println("Computer mark: " + COMPUTER);
@@ -45,7 +66,7 @@ public class TicTacToeGame {
 				BOARD[INDEX] = PLAYER;
 				break;
 			} else {
-				System.out.println("Already occupied! Please select another index");
+				System.out.println("Already occupied! please select another index");
 			}
 		}
 	}
@@ -62,7 +83,7 @@ public class TicTacToeGame {
 	}
 
 	public static char playerInput() {
-		System.out.println("Choose a letter 'X' or 'O' as input:");
+		System.out.println("Choose a letter 'X' or 'O' as input: ");
 		char input = sc.next().charAt(0);
 		return input;
 	}
