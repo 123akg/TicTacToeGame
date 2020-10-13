@@ -38,12 +38,17 @@ public class TicTacToeGame {
 		}
 		while (true) {
 			showBoard();
+			if (IsPlayerTurn) {
+				System.out.println("The Player's turn");
+			} else {
+				System.out.println("The Computer's turn");
+			}
 			selectIndex();
 			showBoard();
 			boolean isWin = IsWin();
 			boolean isTie = IsTie();
 			if (isWin || isTie) {
-				if(isTie) {
+				if (isTie) {
 					System.out.println("Tie!!");
 				}
 				break;
@@ -59,7 +64,7 @@ public class TicTacToeGame {
 				count++;
 			}
 		}
-		if (count == 10) {
+		if (count == 9) {
 			flag = true;
 		} else {
 			flag = false;
@@ -79,9 +84,6 @@ public class TicTacToeGame {
 					|| (PLAYER == BOARD[3] && PLAYER == BOARD[5] && PLAYER == BOARD[7])) {
 				System.out.println("Player wins");
 				return true;
-			} else {
-				IsPlayerTurn = false;
-				IsComputerTurn = true;
 			}
 		} else {
 			if ((COMPUTER == BOARD[1] && COMPUTER == BOARD[2] && COMPUTER == BOARD[3])
@@ -94,9 +96,6 @@ public class TicTacToeGame {
 					|| (COMPUTER == BOARD[2] && COMPUTER == BOARD[5] && COMPUTER == BOARD[7])) {
 				System.out.println("computer wins");
 				return true;
-			} else {
-				IsPlayerTurn = true;
-				IsComputerTurn = false;
 			}
 		}
 		return false;
@@ -104,18 +103,38 @@ public class TicTacToeGame {
 
 	public static void selectIndex() {
 		while (true) {
-			System.out.println("Enter the index from 1 to 9 where you want to place your move");
-			INDEX = sc.nextInt();
-			if (isFreeSpace(BOARD, INDEX) && (INDEX > 0) && (INDEX < 10)) {
-				System.out.println("Its valid move");
-				if (IsPlayerTurn) {
+			if (IsPlayerTurn) {
+				System.out.println("Enter the index from 1 to 9 where you want to place your move: ");
+				INDEX = sc.nextInt();
+				if (isFreeSpace(BOARD, INDEX) && (INDEX > 0) && (INDEX < 10)) {
+					System.out.println("Its valid move");
 					BOARD[INDEX] = PLAYER;
+					IsPlayerTurn = false;
+					IsComputerTurn = true;
+					break;
 				} else {
-					BOARD[INDEX] = COMPUTER;
+					System.out.println("Already occupied! please select another index");
 				}
-				break;
 			} else {
-				System.out.println("Already occupied! please select another index");
+				int win = canIWin();
+				if (win > 0) {
+					BOARD[win] = COMPUTER;
+					break;
+				} else {
+					System.out.println("There is no move to win now! "
+							+ "Enter the index from 1 to 9 where you want to place your move: ");
+					INDEX = sc.nextInt();
+					if (isFreeSpace(BOARD, INDEX) && (INDEX > 0) && (INDEX < 10)) {
+						System.out.println("Its valid move");
+						BOARD[INDEX] = COMPUTER;
+
+						IsPlayerTurn = true;
+						IsComputerTurn = false;
+						break;
+					} else {
+						System.out.println("Already occupied! please select another index");
+					}
+				}
 			}
 		}
 	}
@@ -132,7 +151,7 @@ public class TicTacToeGame {
 	}
 
 	public static char playerInput() {
-		System.out.println("Choose a letter 'X' or 'O' as input: ");
+		System.out.println("Choose a letter 'X' or 'O' as input:");
 		char input = sc.next().charAt(0);
 		return input;
 	}
@@ -159,5 +178,19 @@ public class TicTacToeGame {
 		} else {
 			System.out.println("Computer got the first turn");
 		}
+	}
+
+	public static int canIWin() {
+		for (int i = 1; i < 10; i++) {
+			if (BOARD[i] == ' ') {
+				BOARD[i] = COMPUTER;
+				if (IsWin()) {
+					return i;
+				} else {
+					BOARD[i] = ' ';
+				}
+			}
+		}
+		return 0;
 	}
 }
