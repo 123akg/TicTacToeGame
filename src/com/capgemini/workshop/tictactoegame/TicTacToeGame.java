@@ -12,31 +12,23 @@ public class TicTacToeGame {
 	static boolean HEAD, TAIL, IsPlayerTurn, IsComputerTurn;
 
 	public static void main(String[] args) {
-
 		System.out.println("Welcome to TicTacToe Game");
 		createBoard();
-		Toss();
-		char input = playerInput();
-		if (HEAD) {
-			PLAYER = input;
-			IsPlayerTurn = true;
-			IsComputerTurn = false;
-			if (PLAYER == 'X') {
-				COMPUTER = 'O';
+		int choice;
+		while (true) {
+			System.out.println("Enter your choice:\n1)Head\n2)Tail");
+			choice = sc.nextInt();
+			if (choice == 1 || choice == 2) {
+				break;
 			} else {
-				COMPUTER = 'X';
-			}
-		} else {
-			COMPUTER = input;
-			IsPlayerTurn = false;
-			IsComputerTurn = true;
-			if (COMPUTER == 'X') {
-				PLAYER = 'O';
-			} else {
-				PLAYER = 'X';
+				System.out.println("Invalid choice");
 			}
 		}
+		Toss(choice);
+		System.out.println("The player mark is: " + PLAYER);
+		System.out.println("The computer mark is:" + COMPUTER);
 		while (true) {
+			System.out.println("Board");
 			showBoard();
 			if (IsPlayerTurn) {
 				System.out.println("The Player's turn");
@@ -47,12 +39,18 @@ public class TicTacToeGame {
 			showBoard();
 			boolean isWin = IsWin();
 			boolean isTie = IsTie();
-			if (isWin || isTie) {
-				if (isTie && !isWin) {
-					System.out.println("Tie!!");
+			if (isWin) {
+				if (IsPlayerTurn) {
+					System.out.println("Player wins");
+				} else {
+					System.out.println("Computer wins");
 				}
 				break;
+			} else if (isTie) {
+				System.out.println("Tie!!");
+				break;
 			}
+
 		}
 	}
 
@@ -82,7 +80,6 @@ public class TicTacToeGame {
 					|| (PLAYER == BOARD[3] && PLAYER == BOARD[6] && PLAYER == BOARD[9])
 					|| (PLAYER == BOARD[1] && PLAYER == BOARD[5] && PLAYER == BOARD[9])
 					|| (PLAYER == BOARD[3] && PLAYER == BOARD[5] && PLAYER == BOARD[7])) {
-				System.out.println("Player wins");
 				return true;
 			}
 		} else {
@@ -94,7 +91,6 @@ public class TicTacToeGame {
 					|| (COMPUTER == BOARD[3] && COMPUTER == BOARD[6] && COMPUTER == BOARD[9])
 					|| (COMPUTER == BOARD[1] && COMPUTER == BOARD[5] && COMPUTER == BOARD[9])
 					|| (COMPUTER == BOARD[3] && COMPUTER == BOARD[5] && COMPUTER == BOARD[7])) {
-				System.out.println("Computer wins");
 				return true;
 			}
 		}
@@ -155,8 +151,16 @@ public class TicTacToeGame {
 	}
 
 	public static char playerInput() {
-		System.out.println("Choose a letter 'X' or 'O' as input: ");
-		char input = sc.next().charAt(0);
+		char input;
+		while (true) {
+			System.out.println("Choose a letter 'X' or 'O':");
+			input = sc.next().charAt(0);
+			if (input == 'X' || input == 'O') {
+				break;
+			} else {
+				System.out.println("Invalid letter!");
+			}
+		}
 		return input;
 	}
 
@@ -168,19 +172,40 @@ public class TicTacToeGame {
 		System.out.println(BOARD[7] + " | " + BOARD[8] + " | " + BOARD[9]);
 	}
 
-	public static void Toss() {
+	public static void Toss(int choice) {
 		int toss = (int) (Math.random() * 10) % 2;
-		if (toss == 0) {
+		if (toss == choice) {
 			HEAD = true;
 			TAIL = false;
+			System.out.println("Player wins and got the first turn");
 		} else {
 			HEAD = false;
 			TAIL = true;
+			System.out.println("Computer wins and got the first turn");
 		}
 		if (HEAD) {
-			System.out.println("Player got the first turn");
+			PLAYER = playerInput();
+			IsPlayerTurn = true;
+			IsComputerTurn = false;
+			if (PLAYER == 'X') {
+				COMPUTER = 'O';
+			} else {
+				COMPUTER = 'X';
+			}
 		} else {
-			System.out.println("Computer got the first turn");
+			int select = (int) (Math.random() * 10) % 2;
+			if (select == 0) {
+				COMPUTER = 'X';
+			} else {
+				COMPUTER = 'O';
+			}
+			IsPlayerTurn = false;
+			IsComputerTurn = true;
+			if (COMPUTER == 'X') {
+				PLAYER = 'O';
+			} else {
+				PLAYER = 'X';
+			}
 		}
 	}
 
@@ -205,7 +230,6 @@ public class TicTacToeGame {
 			if (BOARD[i] == ' ') {
 				BOARD[i] = PLAYER;
 				if (IsWin()) {
-					System.out.print("There is chance for");
 					BOARD[i] = ' ';
 					IsPlayerTurn = false;
 					IsComputerTurn = true;
