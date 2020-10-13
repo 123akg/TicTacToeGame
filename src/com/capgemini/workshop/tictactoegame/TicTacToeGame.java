@@ -12,45 +12,61 @@ public class TicTacToeGame {
 	static boolean HEAD, TAIL, IsPlayerTurn, IsComputerTurn;
 
 	public static void main(String[] args) {
-		System.out.println("Welcome to TicTacToe Game");
-		createBoard();
-		int choice;
 		while (true) {
-			System.out.println("Enter your choice:\n1)Head\n2)Tail");
-			choice = sc.nextInt();
-			if (choice == 1 || choice == 2) {
-				break;
-			} else {
-				System.out.println("Invalid choice");
-			}
-		}
-		Toss(choice);
-		System.out.println("The player mark is: " + PLAYER);
-		System.out.println("The computer mark is:" + COMPUTER);
-		while (true) {
-			System.out.println("Board");
-			showBoard();
-			if (IsPlayerTurn) {
-				System.out.println("The Player's turn");
-			} else {
-				System.out.println("The Computer's turn");
-			}
-			selectIndex();
-			showBoard();
-			boolean isWin = IsWin();
-			boolean isTie = IsTie();
-			if (isWin) {
-				if (IsPlayerTurn) {
-					System.out.println("Player wins");
+			System.out.println("Welcome to TicTacToe Game");
+			createBoard();
+			int choice;
+			while (true) {
+				System.out.println("Enter your choice:\n1)Head\n2)Tail");
+				choice = sc.nextInt();
+				if (choice == 1 || choice == 2) {
+					break;
 				} else {
-					System.out.println("Computer wins");
+					System.out.println("Enter number corresponding to choice: ");
 				}
-				break;
-			} else if (isTie) {
-				System.out.println("Tie!!");
+			}
+			Toss(choice);
+			System.out.println("The player mark is: " + PLAYER);
+			System.out.println("The computer mark is:" + COMPUTER);
+			while (true) {
+				System.out.println("Board");
+				showBoard();
+				if (IsPlayerTurn) {
+					System.out.println("The Player's turn");
+				} else {
+					System.out.println("The Computer's turn");
+				}
+				selectIndex();
+				showBoard();
+				boolean isWin = IsWin();
+				boolean isTie = IsTie();
+				if (isWin) {
+					if (IsPlayerTurn) {
+						System.out.println("Player wins");
+					} else {
+						System.out.println("Computer wins");
+					}
+					break;
+				} else if (isTie) {
+					System.out.println("Tie!!");
+					break;
+				}
+			}
+			char gameChoice;
+			while (true) {
+				System.out.println("Do you want to play again?(y/n)");
+				gameChoice = sc.next().charAt(0);
+				if (gameChoice == 'y' || gameChoice == 'n') {
+					break;
+				}
+				else {
+					System.out.println("Enter y or n as input");
+				}
+			}
+			if(gameChoice == 'n') {
+				System.out.println("Thank you!!");
 				break;
 			}
-
 		}
 	}
 
@@ -173,7 +189,7 @@ public class TicTacToeGame {
 	}
 
 	public static void Toss(int choice) {
-		int toss = (int) (Math.random() * 10) % 2;
+		int toss = (int) ((Math.random() * 10) % 2) +1;
 		if (toss == choice) {
 			HEAD = true;
 			TAIL = false;
