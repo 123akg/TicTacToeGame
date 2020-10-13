@@ -6,7 +6,7 @@ public class TicTacToeGame {
 	
 	static char[] BOARD;
 	static Scanner sc = new Scanner(System.in);
-
+	static int INDEX;
 	public static void main(String[] args) {
 		char player = ' ';
 		char computer = ' ';
@@ -22,8 +22,20 @@ public class TicTacToeGame {
 		System.out.println("Player mark: " + player);
 		System.out.println("Computer mark: " + computer);
 		showBoard();
+		System.out.println("Enter the index from 1 to 9 where you want to place your move: ");
+		INDEX = sc.nextInt();
+		selectIndex(INDEX);
+		showBoard();
 	}
-
+	public static void selectIndex(int index) {
+		if(BOARD[index] == ' ') {
+			System.out.println("Its valid move");
+			BOARD[index] = 'X';
+		}
+		else {
+			System.out.println("Already occupied! please select another index");
+		}
+	}
 	public static void createBoard() {
 		BOARD = new char[10];
 		for (int i = 1; i < 10; i++) {
